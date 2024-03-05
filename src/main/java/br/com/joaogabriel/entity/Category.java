@@ -1,5 +1,6 @@
 package br.com.joaogabriel.entity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -8,10 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Entity
 @Table(name = "tb_category")
+@Entity
 public class Category {
 	
 	@Id
@@ -20,6 +22,9 @@ public class Category {
 	
 	@Column(nullable = false, length = 100)
 	private String name;
+	
+	@OneToMany(mappedBy = "category")
+	private List<Product> products;
 	
 	public Category() {
 		
@@ -45,6 +50,14 @@ public class Category {
 		this.name = name;
 	}
 
+	public List<Product> getProducts() {
+		return products;
+	}
+	
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

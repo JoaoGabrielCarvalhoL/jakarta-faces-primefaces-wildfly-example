@@ -9,6 +9,8 @@
 </h:head>
 <h:body>
 
+	<ui:include src="Menu.xhtml"></ui:include>
+
 	<h:form>
 		<p:panel header="Category">
 		<p:messages closable="true">
@@ -23,14 +25,14 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="1">
-				<p:commandButton value="Save" actionListener="#{categoryBean.save}" update="dataPanel"></p:commandButton>
+				<p:commandButton value="Save" actionListener="#{categoryBean.save}" update="dataPanel tableCategory"></p:commandButton>
 			</h:panelGrid>
 
 			<p:separator></p:separator>
 
-			<p:dataTable paginator="true" lazy="false">
-				<p:column headerText="#"></p:column>
-				<p:column headerText="Name"></p:column>
+			<p:dataTable paginator="true" lazy="false" value="#{categoryBean.categories}" var="category" id="tableCategory">
+				<p:column headerText="Id">#{category.id}</p:column>
+				<p:column headerText="Name">#{category.name}</p:column>
 				<p:column headerText="Options"></p:column>
 			</p:dataTable>
 

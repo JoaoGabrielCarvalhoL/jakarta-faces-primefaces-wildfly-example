@@ -46,7 +46,7 @@ public abstract class SimpleGenericDao<T, ID> implements CrudDao<T, ID> {
 			this.entityManager.getTransaction().begin();
 			boolean contains = this.entityManager.contains(type);
 			if (contains) {
-				this.entityManager.refresh(type);
+				this.entityManager.merge(type);
 				this.entityManager.getTransaction().commit();
 				return type;
 			} else {

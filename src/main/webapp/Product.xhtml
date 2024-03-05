@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="jakarta.faces.facelets" xmlns:f="jakarta.faces.core"
+	xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Products</title>
+</h:head>
+<h:body>
+
+	<ui:include src="Menu.xhtml"></ui:include>
+
+	<h:form>
+		<p:panel header="Products">
+		<p:messages closable="true">
+			<p:autoUpdate></p:autoUpdate>
+		</p:messages>
+			<h:panelGrid columns="4" id="dataPanel">
+				<p:outputLabel value="Code"></p:outputLabel>
+				<p:inputText readonly="true" size="10"  value="#{productBean.product.id}"></p:inputText>
+
+				<p:outputLabel value="Name" for="name"></p:outputLabel>
+				<p:inputText id="name" maxlength="50" size="30"  required="true" 
+				requiredMessage="The name field is required!" value="#{productBean.product.name}"></p:inputText>
+				
+				<p:outputLabel value="Amount"></p:outputLabel>
+				<p:inputText maxlength="10" size="10"  required="true" 
+				requiredMessage="The amount field is required!" value="#{productBean.product.amount}"></p:inputText>
+				
+				<p:outputLabel value="Price"></p:outputLabel>
+				<p:inputNumber  symbol=" R$"
+                                symbolPosition="s" decimalSeparator="," thousandSeparator="." 
+                                required="true" requiredMessage="The price field is required!" value="#{productBean.product.price}"></p:inputNumber>
+			
+				
+				<p:outputLabel value="Expiration Date"></p:outputLabel>
+				<p:calendar pattern="dd/MM/yyyy" value="#{productBean.product.expirationDate}"></p:calendar>
+				
+				<p:outputLabel value="Perishable"></p:outputLabel>
+				
+				<p:selectOneRadio layout="lineDirection" id="radioBox" value="#{productBean.product.isPerishable}">
+           			<f:selectItem itemLabel="Yes" itemValue="true"/>
+            		<f:selectItem itemLabel="No" itemValue="false"/>
+        	</p:selectOneRadio>
+        	
+        	<p:outputLabel value="Category">
+				<p:selectOneMenu required="true" requiredMessage="The category field is required" value="#{productBean.product.category}" 
+				converter="omnifaces.SelectItemsConverter">
+					<f:selectItem itemLabel="Select Category"></f:selectItem>
+					<f:selectItems value="#{productBean.categories}" var="category" itemLabel="#{category.name}"></f:selectItems>
+				</p:selectOneMenu>
+			</p:outputLabel>
+        	
+			</h:panelGrid>
+			
+			
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Save" actionListener="#{productBean.save}" update="dataPanel tableProduct"></p:commandButton>
+				<p:commandButton value="Delete" actionListener="#{productBean.remove}" update="dataPanel tableProduct"></p:commandButton>
+			</h:panelGrid>
+
+			<p:separator></p:separator>
+
+			<p:dataTable paginator="true" lazy="false"  value="#{productBean.products}" var="product" id="tableProduct">
+				<p:column headerText="Id">#{product.id}</p:column>
+				<p:column headerText="Name">#{product.name}</p:column>
+				<p:column headerText="Price">
+				</p:column>
+				<p:column headerText="Amount">#{product.amount}</p:column>
+				<p:column headerText="Expiration Date">
+					<p:outputLabel value="#{product.expirationDate}">
+						<f:convertDateTime type="localDate" pattern="dd/MM/yyyy"></f:convertDateTime>
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Perishable">#{product.isPerishable}</p:column>
+				<p:column headerText="Category">#{product.category.name}</p:column>
+				<p:column headerText="Options">
+					<p:commandButton value="Info" actionListener="#{productBean.info(product)}" process="@this" update="@form:dataPanel"></p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+
+	</h:form>
+
+
+
+
+
+
+
+</h:body>
+</html>
